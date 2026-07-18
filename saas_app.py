@@ -11,9 +11,9 @@ from pydantic import BaseModel
 
 app = FastAPI(title="AI Lead Gen SaaS")
 
-GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = "llama-3.1-8b-instant"
-GROQ_KEY = os.getenv("GROQ_KEY", "")
+LLM_URL = "https://openrouter.ai/api/v1/chat/completions"
+LLM_MODEL = "meta-llama/llama-3.1-8b-instruct:free"
+LLM_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
 SCRAPE_KEY = "sk-stealth-pro-99"
@@ -60,8 +60,8 @@ def fetch_listings(city: str, niche: str) -> list[dict]:
 
 
 async def generate_email(business_name: str, niche: str) -> str:
-    if not GROQ_KEY:
-        return "GROQ_KEY not configured"
+    if not LLM_KEY:
+        return "OPENROUTER_API_KEY not configured"
 
     prompt = (
         f"Write a short, 2-sentence cold email offering SEO services "
@@ -70,20 +70,20 @@ async def generate_email(business_name: str, niche: str) -> str:
 
     async with httpx.AsyncClient() as client:
         resp = await client.post(
-            GROQ_URL,
+            LLM_URL,
             headers={
-                "Authorization": f"Bearer {GROQ_KEY}",
+                "Authorization": f"Bearer {LLM_KEY}",
                 "Content-Type": "application/json",
             },
             json={
-                "model": GROQ_MODEL,
+                "model": LLM_MODEL,
                 "messages": [{"role": "user", "content": prompt}],
             },
             timeout=30,
         )
         if resp.status_code != 200:
-            print(f"GROQ API error {resp.status_code}: {resp.text}")
-            return "GROQ API error"
+            print(f"OpenRouter API error {resp.status_code}: {resp.text}")
+            return "OpenRouter API error"
         result = resp.json()
         return result["choices"][0]["message"]["content"].strip()
 
