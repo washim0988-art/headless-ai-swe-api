@@ -13,7 +13,7 @@ app = FastAPI(title="AI Lead Gen SaaS")
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.1-8b-instant"
-GROQ_KEY = os.environ.get("GROQ_KEY", "")
+GROQ_KEY = os.getenv("GROQ_KEY", "")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
 SCRAPE_KEY = "sk-stealth-pro-99"
@@ -82,6 +82,7 @@ async def generate_email(business_name: str, niche: str) -> str:
             timeout=30,
         )
         if resp.status_code != 200:
+            print(f"GROQ API error {resp.status_code}: {resp.text}")
             return "GROQ API error"
         result = resp.json()
         return result["choices"][0]["message"]["content"].strip()
