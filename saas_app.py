@@ -20,7 +20,7 @@ LLM_MODELS = [
 LLM_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
-SCRAPE_KEY = "sk-stealth-pro-99"
+SCRAPE_KEY = os.getenv("SCRAPE_API_KEY", "sk-stealth-pro-99")
 
 
 class GenerateRequest(BaseModel):
