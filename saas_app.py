@@ -12,7 +12,13 @@ from pydantic import BaseModel
 app = FastAPI(title="AI Lead Gen SaaS")
 
 LLM_URL = "https://openrouter.ai/api/v1/chat/completions"
-LLM_MODEL = "meta-llama/llama-3.1-8b-instruct:free"
+LLM_MODELS = [
+    "google/gemini-flash-1.5",
+    "meta-llama/llama-3-8b-instruct:free",
+    "meta-llama/llama-3.1-8b-instruct:free",
+    "mistralai/mistral-7b-instruct:free",
+    "qwen/qwen-2-7b-instruct:free",
+]
 LLM_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
@@ -69,23 +75,25 @@ async def generate_email(business_name: str, niche: str) -> str:
     )
 
     async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            LLM_URL,
-            headers={
-                "Authorization": f"Bearer {LLM_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": LLM_MODEL,
-                "messages": [{"role": "user", "content": prompt}],
-            },
-            timeout=30,
-        )
-        if resp.status_code != 200:
-            print(f"OpenRouter API error {resp.status_code}: {resp.text}")
-            return "OpenRouter API error"
-        result = resp.json()
-        return result["choices"][0]["message"]["content"].strip()
+        for model in LLM_MODELS:
+            resp = await client.post(
+                LLM_URL,
+                headers={
+                    "Authorization": f"Bearer {LLM_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+                timeout=30,
+            )
+            if resp.status_code == 200:
+                result = resp.json()
+                return result["choices"][0]["message"]["content"].strip()
+            print(f"OpenRouter model {model} failed ({resp.status_code}): {resp.text}")
+
+    return "AI generation temporarily unavailable."
 
 
 @app.get("/")
