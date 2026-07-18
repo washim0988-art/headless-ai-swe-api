@@ -5,8 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY swe_api.py .
+COPY saas_app.py index.html ./
 
 EXPOSE 8000
 
-CMD ["uvicorn", "swe_api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "saas_app:app", "--host", "0.0.0.0", "--port", "8000"]
