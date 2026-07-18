@@ -13,9 +13,9 @@ app = FastAPI(title="AI Lead Gen SaaS")
 
 LLM_URL = "https://openrouter.ai/api/v1/chat/completions"
 LLM_MODELS = [
-    "nvidia/nemotron-3-super:free",
-    "openai/gpt-oss-20b:free",
-    "nvidia/nemotron-3-nano-30b-a3b:free",
+    "meta-llama/llama-3.1-8b-instruct:free",
+    "mistralai/mistral-7b-instruct:free",
+    "qwen/qwen-2-7b-instruct:free",
 ]
 LLM_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
