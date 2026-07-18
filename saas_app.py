@@ -1,5 +1,6 @@
 import os
 import re
+import time
 
 import brotli
 import httpx
@@ -11,13 +12,9 @@ from pydantic import BaseModel
 
 app = FastAPI(title="AI Lead Gen SaaS")
 
-LLM_URL = "https://openrouter.ai/api/v1/chat/completions"
-LLM_MODELS = [
-    "meta-llama/llama-3.1-8b-instruct:free",
-    "mistralai/mistral-7b-instruct:free",
-    "qwen/qwen-2-7b-instruct:free",
-]
-LLM_KEY = os.getenv("OPENROUTER_API_KEY", "")
+LLM_URL = "https://api.groq.com/openai/v1/chat/completions"
+LLM_MODEL = "llama-3.1-8b-instant"
+LLM_KEY = os.getenv("GROQ_API_KEY", "")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
 SCRAPE_KEY = os.getenv("SCRAPE_API_KEY", "sk-stealth-pro-99")
@@ -65,31 +62,32 @@ def fetch_listings(city: str, niche: str) -> list[dict]:
 
 async def generate_email(business_name: str, niche: str) -> str:
     if not LLM_KEY:
-        return "OPENROUTER_API_KEY not configured"
+        return "GROQ_API_KEY not configured"
 
     prompt = (
         f"Write a short, 2-sentence cold email offering SEO services "
         f"to a {niche} named {business_name}. Do not include the subject line."
     )
 
+    time.sleep(1)
+
     async with httpx.AsyncClient() as client:
-        for model in LLM_MODELS:
-            resp = await client.post(
-                LLM_URL,
-                headers={
-                    "Authorization": f"Bearer {LLM_KEY}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                },
-                timeout=30,
-            )
-            if resp.status_code == 200:
-                result = resp.json()
-                return result["choices"][0]["message"]["content"].strip()
-            print(f"OpenRouter model {model} failed ({resp.status_code}): {resp.text}")
+        resp = await client.post(
+            LLM_URL,
+            headers={
+                "Authorization": f"Bearer {LLM_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": LLM_MODEL,
+                "messages": [{"role": "user", "content": prompt}],
+            },
+            timeout=30,
+        )
+        if resp.status_code == 200:
+            result = resp.json()
+            return result["choices"][0]["message"]["content"].strip()
+        print(f"Groq LLM call failed ({resp.status_code}): {resp.text}")
 
     return "AI generation temporarily unavailable."
 
