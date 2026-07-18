@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stealth Content AI — $50 SEO Blog Articles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: #0b0e14;
+            color: #e8edf5;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 48px 0 24px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(167, 139, 250, 0.25);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 32px 0 40px;
+        }
+
+        .hero h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h2 span {
+            color: #fbbf24;
+        }
+
+        .hero .sub {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            margin-top: 16px;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .price-block {
+            margin: 36px auto;
+            background: linear-gradient(145deg, #141a24, #1a2130);
+            border: 1px solid #2a3345;
+            border-radius: 24px;
+            padding: 36px 32px;
+            max-width: 480px;
+        }
+
+        .price-block .price {
+            font-size: 3.6rem;
+            font-weight: 800;
+            color: #fbbf24;
+            line-height: 1;
+        }
+
+        .price-block .price sup {
+            font-size: 1.4rem;
+            font-weight: 600;
+            vertical-align: super;
+        }
+
+        .price-block .price-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        .price-block .guarantee {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #6ee7b7;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.15rem;
+            padding: 16px 48px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            margin-top: 24px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 540px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+
+            .price-block .price {
+                font-size: 2.8rem;
+            }
+        }
+
+        .feature-card {
+            background: #141a24;
+            border: 1px solid #2a3345;
+            border-radius: 16px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: #4f46e5;
+        }
+
+        .feature-card .icon {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .feature-card p {
+            font-size: 0.88rem;
+            color: #94a3b8;
+        }
+
+        .how-it-works {
+            margin: 48px 0;
+        }
+
+        .how-it-works h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .step-content h4 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .step-content p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+
+        .faq {
+            margin: 48px 0;
+        }
+
+        .faq h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        details {
+            background: #141a24;
+            border: 1px solid #2a3345;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        details summary {
+            font-weight: 600;
+            font-size: 0.95rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        details summary::after {
+            content: '+';
+            font-size: 1.2rem;
+            color: #94a3b8;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            content: '−';
+        }
+
+        details p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 12px;
+            line-height: 1.7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0 48px;
+            color: #475569;
+            font-size: 0.85rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1e293b;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">Now accepting orders</div>
+            <h1>Stealth Content AI</h1>
+            <p>Real-time scraped research + AI writing in one flat fee</p>
+        </header>
+
+        <section class="hero">
+            <h2>1,500 words. Real-time data. <span>$50 flat.</span></h2>
+            <p class="sub">
+                We research your topic with live scraped sources, then write and cite a
+                fully SEO-optimized blog article — delivered to your inbox within 24 hours.
+            </p>
+
+            <div class="price-block">
+                <div class="price"><sup>$</sup>50</div>
+                <div class="price-desc">per article • delivered in 24h • no subscriptions</div>
+                <div class="guarantee">✓ 100% satisfaction or we rewrite it free</div>
+                <a href="https://buy.stripe.com/test_YourLinkHere" class="btn-primary" target="_blank"
+                    rel="noopener">Buy Now — Order Your Article</a>
+                <div style="margin-top:12px;font-size:0.8rem;color:#64748b;">Secure checkout via Stripe • Pay once, own
+                    it forever</div>
+            </div>
+        </section>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="icon">🔍</div>
+                <h3>Live Scraped Research</h3>
+                <p>We crawl the web in real-time for the latest data, stats, and sources on your topic.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">✏️</div>
+                <h3>1,500 Words of Original Content</h3>
+                <p>Thorough, readable, and built around your target keywords — never spun or rewritten.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📄</div>
+                <h3>SEO Optimized</h3>
+                <p>Proper headings, meta-ready snippets, internal linking structure, and keyword placement.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⏰</div>
+                <h3>24-Hour Delivery</h3>
+                <p>Place your order and receive the finished draft within one business day via email.</p>
+            </div>
+        </div>
+
+        <section class="how-it-works">
+            <h3>How It Works</h3>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>Tell us your topic</h4>
+                    <p>Submit a topic, a few keywords, and any specific angle you want covered during checkout.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>We scrape & research</h4>
+                    <p>Our engine gathers real-time data from authoritative sources to build a factual citation base.
+                    </p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>We write your article</h4>
+                    <p>Every article is drafted to 1,500+ words with inline citations, headings, and SEO structure.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h4>You receive the final file</h4>
+                    <p>Delivered as a clean Markdown or HTML file you can drop directly into your CMS.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h3>Frequently Asked</h3>
+            <details>
+                <summary>What topics do you cover?</summary>
+                <p>Any topic with sufficient web coverage — tech, finance, health, marketing, lifestyle, travel, and
+                    more. If it can be researched online, we can write it. Niche or highly technical topics are welcome.
+                </p>
+            </details>
+            <details>
+                <summary>How is the article delivered?</summary>
+                <p>We send a download link to the email you provide at checkout. The file is available in both Markdown
+                    (.md) and HTML formats, ready to paste into WordPress, Medium, Ghost, or any CMS.</p>
+            </details>
+            <details>
+                <summary>Is the content original and plagiarism-free?</summary>
+                <p>Yes. Every article is written from scratch per order. We do not reuse, spin, or template content. A
+                    plagiarism report can be included on request.</p>
+            </details>
+            <details>
+                <summary>What if I need revisions?</summary>
+                <p>We offer one free round of revisions within 48 hours of delivery. If the article misses the mark
+                    entirely, we rewrite it at no extra cost — no questions asked.</p>
+            </details>
+        </section>
+
+        <div style="text-align:center;margin:32px 0 16px;">
+            <a href="https://buy.stripe.com/test_YourLinkHere" class="btn-primary" target="_blank" rel="noopener">Buy
+                Now — $50</a>
+        </div>
+
+        <footer>
+            © 2026 Stealth Content AI. All rights reserved.
+        </footer>
+    </div>
+</body>
+
+</html>
