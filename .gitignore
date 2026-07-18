@@ -1,0 +1,12 @@
+debug.html
+*.csv
+_sample.py
+html_dump.txt
+_inspect*.py
+_check*.py
+_test*.py
+_debug*.py
+_analyze*.py
+_find*.py
+_show*.py
+_verify*.py
