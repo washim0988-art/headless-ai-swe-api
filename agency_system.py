@@ -1,24 +1,48 @@
+import argparse
+import asyncio
 import csv
 import os
 import sys
+
 import httpx
+import requests
+import brotli
+import json
 from bs4 import BeautifulSoup
 
-TARGET_URL = "https://www.merchantcircle.com/search?q=plumbers&location=Austin%2C+TX"
-OUTPUT_CSV = "client_lead_list.csv"
 
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.1-8b-instant"
 GROQ_KEY = os.environ.get("GROQ_KEY", "")
 
+API_URL = "https://stealth-scraper-api.onrender.com/scrape"
+API_KEY = "sk-stealth-pro-99"
 
-def fetch_html() -> str:
-    import requests, brotli, json
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="AI Agency Lead Generator")
+    parser.add_argument("--city", required=True, help="City to target (e.g. Miami)")
+    parser.add_argument("--niche", required=True, help="Niche / industry (e.g. Roofers)")
+    return parser.parse_args()
+
+
+def build_url(city: str, niche: str) -> str:
+    q = niche.replace(" ", "+")
+    loc = city.replace(" ", "+")
+    return f"https://www.merchantcircle.com/search?q={q}&location={loc}"
+
+
+def build_output_csv(city: str, niche: str) -> str:
+    safe_niche = niche.replace(" ", "_")
+    safe_city = city.replace(" ", "_")
+    return f"{safe_niche}_{safe_city}_leads.csv"
+
+
+def fetch_html(url: str) -> str:
     resp = requests.post(
-        "https://stealth-scraper-api.onrender.com/scrape",
-        headers={"X-API-Key": "sk-stealth-pro-99"},
-        json={"url": TARGET_URL},
+        API_URL,
+        headers={"X-API-Key": API_KEY},
+        json={"url": url},
         timeout=30,
     )
     raw = resp.content
@@ -47,13 +71,13 @@ def parse_businesses(html: str) -> list[dict]:
     return businesses
 
 
-async def generate_email(business_name: str) -> str:
+async def generate_email(business_name: str, niche: str) -> str:
     if not GROQ_KEY:
         return "GROQ_KEY not configured"
 
     prompt = (
         f"Write a short, 2-sentence cold email offering SEO services "
-        f"to a plumber named {business_name}. Do not include the subject line."
+        f"to a {niche} named {business_name}. Do not include the subject line."
     )
 
     async with httpx.AsyncClient() as client:
@@ -77,8 +101,17 @@ async def generate_email(business_name: str) -> str:
 
 
 async def main():
-    print("Fetching HTML via Stealth Scraper API...")
-    html = fetch_html()
+    args = parse_args()
+    city = args.city
+    niche = args.niche
+
+    target_url = build_url(city, niche)
+    output_csv = build_output_csv(city, niche)
+
+    print(f"Target: {city} | Niche: {niche}")
+    print(f"Fetching: {target_url}")
+
+    html = fetch_html(target_url)
     print(f"Received {len(html)} bytes")
 
     businesses = parse_businesses(html)
@@ -92,19 +125,18 @@ async def main():
 
     for i, biz in enumerate(businesses):
         print(f"  [{i+1}/{len(businesses)}] Generating email for {biz['business_name']}...")
-        biz["ai_email"] = await generate_email(biz["business_name"])
+        biz["ai_email"] = await generate_email(biz["business_name"], niche)
 
-    with open(OUTPUT_CSV, "w", newline="", encoding="utf-8") as f:
+    with open(output_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=["business_name", "phone", "ai_email"])
         writer.writeheader()
         writer.writerows(businesses)
 
-    print(f"\nSaved {len(businesses)} leads to {OUTPUT_CSV}")
+    print(f"\nSaved {len(businesses)} leads to {output_csv}")
     for biz in businesses[:3]:
         print(f"\n{biz['business_name']} | {biz['phone']}")
         print(f"  Email: {biz['ai_email'][:120]}...")
 
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
