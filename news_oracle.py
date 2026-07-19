@@ -85,6 +85,9 @@ def execute_polymarket_trade(market_id, outcome, amount):
         chain_id=chain_id,
     )
 
+    creds = client.create_or_derive_api_creds()
+    client.set_api_creds(creds)
+
     order_args = OrderArgs(
         price=0.50,
         size=amount,
