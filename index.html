@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Lead Gen SaaS</title>
+<title>Lead Gen SaaS</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -84,8 +84,8 @@ tbody tr:hover { background: rgba(124, 58, 237, 0.04); }
 </head>
 <body>
 <div class="container">
-    <h1>AI Lead Gen SaaS</h1>
-    <p class="subtitle">Scrape local business listings and generate AI cold emails in seconds.</p>
+    <h1>Lead Gen SaaS</h1>
+    <p class="subtitle">Scrape local business listings and extract verified contact emails.</p>
 
     <div class="card">
         <div class="form-row">
@@ -113,8 +113,8 @@ tbody tr:hover { background: rgba(124, 58, 237, 0.04); }
         <div id="spinner" class="spinner" style="margin:0 auto 16px;"></div>
         <div id="tableWrap">
             <table>
-                <thead><tr><th>Business Name</th><th>Phone</th><th>AI Email</th></tr></thead>
-                <tbody id="tbody"><tr><td class="empty" colspan="3">Enter a city and niche, then click Generate Leads.</td></tr></tbody>
+                <thead><tr><th>Business Name</th><th>Phone</th><th>Website</th><th>Email</th></tr></thead>
+                <tbody id="tbody"><tr><td class="empty" colspan="4">Enter a city and niche, then click Generate Leads.</td></tr></tbody>
             </table>
         </div>
     </div>
@@ -137,9 +137,9 @@ async function generate() {
 
     btn.disabled = true;
     spinner.style.display = 'inline-block';
-    status.textContent = 'Scraping listings and generating emails...';
+    status.textContent = 'Scraping listings and extracting emails...';
     errorMsg.textContent = '';
-    tbody.innerHTML = '<tr><td class="empty" colspan="3">Loading...</td></tr>';
+            tbody.innerHTML = '<tr><td class="empty" colspan="4">Loading...</td></tr>';
     downloadBtn.disabled = true;
 
     try {
@@ -158,7 +158,7 @@ async function generate() {
         downloadBtn.disabled = false;
     } catch (e) {
         errorMsg.textContent = e.message;
-        tbody.innerHTML = '<tr><td class="empty" colspan="3">No results found. Try a different city or niche.</td></tr>';
+            tbody.innerHTML = '<tr><td class="empty" colspan="4">No results found. Try a different city or niche.</td></tr>';
         status.textContent = '';
     } finally {
         btn.disabled = false;
@@ -169,22 +169,23 @@ async function generate() {
 function renderTable(data) {
     const tbody = document.getElementById('tbody');
     if (!data.length) {
-        tbody.innerHTML = '<tr><td class="empty" colspan="3">No results found.</td></tr>';
+        tbody.innerHTML = '<tr><td class="empty" colspan="4">No results found.</td></tr>';
         return;
     }
     tbody.innerHTML = data.map(b => `
         <tr>
             <td><strong>${escapeHtml(b.business_name)}</strong></td>
             <td class="phone-cell">${escapeHtml(b.phone)}</td>
-            <td class="email-cell">${escapeHtml(b.ai_email)}</td>
+            <td class="phone-cell">${b.website ? `<a href="${escapeHtml(b.website)}" target="_blank" style="color:#60a5fa;">${escapeHtml(b.website)}</a>` : '—'}</td>
+            <td class="email-cell">${escapeHtml(b.email || b.ai_email || '')}</td>
         </tr>
     `).join('');
 }
 
 function downloadCSV() {
     if (!leadsData.length) return;
-    const rows = [['Business Name','Phone','AI Email']];
-    leadsData.forEach(b => rows.push([b.business_name, b.phone, b.ai_email]));
+    const rows = [['Business Name','Phone','Website','Email']];
+    leadsData.forEach(b => rows.push([b.business_name, b.phone, b.website || '', b.email || b.ai_email || '']));
     const csv = rows.map(r => r.map(c => '"' + c.replace(/"/g, '""') + '"').join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const a = document.createElement('a');
