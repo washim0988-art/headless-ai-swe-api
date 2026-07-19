@@ -16,7 +16,7 @@ STEALTH_API_KEY = "sk-stealth-pro-99"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = "llama-3.3-70b-versatile"
 
-MARKET_ID = "0xdeadbeef"  # placeholder
+MARKET_ID = '["103306680198948704554599811183197844953598147952241074674297011149394308706028", "92816915429998265485709440266340158621084369220656661191529847288128743404723"]'
 
 
 def fetch_via_stealth(url):
@@ -75,6 +75,9 @@ def execute_polymarket_trade(market_id, outcome, amount):
         raise RuntimeError("PRIVATE_KEY environment variable not set")
     chain_id = int(os.environ.get("CHAIN_ID", "137"))
 
+    token_ids = json.loads(market_id)
+    token_id = token_ids[0] if outcome == "YES" else token_ids[1]
+
     client = ClobClient(
         host="https://clob.polymarket.com",
         key=private_key,
@@ -85,7 +88,7 @@ def execute_polymarket_trade(market_id, outcome, amount):
         price=1.0,
         size=amount,
         side="BUY",
-        token_id=market_id,
+        token_id=token_id,
     )
 
     signed_order = client.create_order(order_args)
