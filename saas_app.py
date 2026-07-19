@@ -1,3 +1,4 @@
+import json
 import os
 import re
 
@@ -20,11 +21,7 @@ class GenerateRequest(BaseModel):
     niche: str
 
 
-def fetch_listings(city: str, niche: str) -> list[dict]:
-    q = niche.replace(" ", "+")
-    loc = city.replace(" ", "+")
-    url = f"https://www.merchantcircle.com/search?q={q}&location={loc}"
-
+def scrape_via_api(url: str) -> str:
     resp = requests.post(
         SCRAPE_API,
         headers={"X-API-Key": SCRAPE_KEY},
@@ -36,49 +33,109 @@ def fetch_listings(city: str, niche: str) -> list[dict]:
         encoding = resp.headers.get("content-encoding", "")
         if encoding == "br":
             raw = brotli.decompress(raw)
-    data = __import__("json").loads(raw.decode("utf-8"))
-    html = data["html"]
+    data = json.loads(raw.decode("utf-8"))
+    return data["html"]
 
+
+def find_website_on_detail_page(detail_url: str) -> str:
+    try:
+        html = scrape_via_api(detail_url)
+    except Exception:
+        return ""
+    soup = BeautifulSoup(html, "html.parser")
+    external = soup.select_one(
+        'a[href^="http"]:not([href*="merchantcircle"]):not([href*="facebook"]):not([href*="twitter"]):not([href*="onetrust"]):not([href*="google"])'
+    )
+    if external:
+        return external["href"]
+    url_meta = soup.select_one('[itemprop="url"][href]')
+    if url_meta:
+        return url_meta["href"]
+    url_meta_content = soup.select_one('[itemprop="url"]')
+    if url_meta_content and url_meta_content.get("content"):
+        return url_meta_content["content"]
+    return ""
+
+
+def fetch_listings(city: str, niche: str) -> list[dict]:
+    q = niche.replace(" ", "+")
+    loc = city.replace(" ", "+")
+    url = f"https://www.merchantcircle.com/search?q={q}&location={loc}"
+
+    html = scrape_via_api(url)
     soup = BeautifulSoup(html, "html.parser")
     businesses = []
 
     for item in soup.select("div.company-item"):
         name_el = item.select_one(".company-item-title")
         phone_el = item.select_one(".company-item-phone")
-        website_el = item.select_one('a[href^="http"]:not([href*="merchantcircle"])')
+        link_el = item.select_one(
+            ".company-item-title a, h3.company-item-title a"
+        )
         if name_el and phone_el:
             name = name_el.get_text(strip=True)
             phone = phone_el.get_text(strip=True)
-            website = website_el.get("href", "") if website_el else ""
             cleaned = "".join(c for c in phone if c.isdigit() or c in "()+-. ")
-            if name and cleaned:
-                businesses.append({"business_name": name, "phone": cleaned, "website": website})
+            if not name or not cleaned:
+                continue
+
+            website = ""
+            detail_url = link_el["href"] if link_el else ""
+            if detail_url and detail_url.startswith("/"):
+                detail_url = "https://www.merchantcircle.com" + detail_url
+            if detail_url and "merchantcircle.com" in detail_url:
+                website = find_website_on_detail_page(detail_url)
+
+            businesses.append({
+                "business_name": name,
+                "phone": cleaned,
+                "website": website,
+            })
 
     return businesses
 
 
 async def extract_email(website_url: str) -> str:
     if not website_url:
-        return "No email found"
+        return ""
 
-    payload = {"key": SCRAPE_KEY, "url": website_url}
+    urls_to_try = [website_url.rstrip("/")]
+    parsed = website_url.rstrip("/")
+    for suffix in ["/contact", "/contact-us"]:
+        candidate = parsed + suffix
+        if candidate not in urls_to_try:
+            urls_to_try.append(candidate)
 
-    async with httpx.AsyncClient() as client:
-        resp = await client.post(SCRAPE_API, json=payload, timeout=60)
-        if resp.status_code != 200:
-            return "No email found"
+    for url in urls_to_try:
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(
+                    SCRAPE_API,
+                    headers={"X-API-Key": SCRAPE_KEY},
+                    json={"url": url},
+                    timeout=60,
+                )
+                if resp.status_code != 200:
+                    continue
+                raw = resp.content
+                if not raw.startswith(b"{"):
+                    encoding = resp.headers.get("content-encoding", "")
+                    if encoding == "br":
+                        raw = brotli.decompress(raw)
+                data = json.loads(raw.decode("utf-8"))
+                html = data.get("html", "")
 
-        html = resp.text
-        emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", html)
-        junk_domains = {"example", "sentry", "donotreply"}
-        for email in emails:
-            local = email.split("@")[0].lower()
-            if local not in junk_domains and not any(
-                junk in email.lower() for junk in ["example", "sentry", "donotreply"]
-            ):
-                return email
-
-    return "No email found"
+                emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", html)
+                junk_domains = {"example", "sentry", "donotreply"}
+                for email in emails:
+                    local = email.split("@")[0].lower()
+                    if local not in junk_domains and not any(
+                        junk in email.lower() for junk in ["example", "sentry", "donotreply"]
+                    ):
+                        return email
+        except Exception:
+            continue
+    return ""
 
 
 @app.get("/")

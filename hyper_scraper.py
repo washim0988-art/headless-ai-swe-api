@@ -41,6 +41,9 @@ def find_website_on_detail_page(detail_url):
     url_meta = soup.select_one('[itemprop="url"][href]')
     if url_meta:
         return url_meta["href"]
+    url_meta_content = soup.select_one('[itemprop="url"]')
+    if url_meta_content and url_meta_content.get("content"):
+        return url_meta_content["content"]
     return ""
 
 
@@ -88,10 +91,14 @@ def scrape_merchantcircle(city, niche):
 
 
 def extract_emails_from_html(html):
-    emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", html)
+    all_emails = set()
+    for match in re.finditer(r"[\w\.-]+@[\w\.-]+\.\w+", html):
+        all_emails.add(match.group())
+    for match in re.finditer(r'mailto:([\w\.-]+@[\w\.-]+\.\w+)', html):
+        all_emails.add(match.group(1))
     junk_domains = {"example", "sentry", "donotreply"}
     valid = []
-    for email in emails:
+    for email in all_emails:
         local = email.split("@")[0].lower()
         if local not in junk_domains and not any(
             junk in email.lower() for junk in ["example", "sentry", "donotreply"]
@@ -103,7 +110,7 @@ def extract_emails_from_html(html):
 def fetch_homepage_email(website_url, debug=False):
     urls_to_try = [website_url.rstrip("/")]
     parsed = website_url.rstrip("/")
-    for suffix in ["/contact", "/contact-us"]:
+    for suffix in ["/contact", "/contact-us", "/contact.html", "/contactus", "/about", "/about-us"]:
         candidate = parsed + suffix
         if candidate not in urls_to_try:
             urls_to_try.append(candidate)
