@@ -1,6 +1,5 @@
 import os
 import re
-import time
 
 import brotli
 import httpx
@@ -10,11 +9,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
-app = FastAPI(title="AI Lead Gen SaaS")
-
-LLM_URL = "https://api.groq.com/openai/v1/chat/completions"
-LLM_MODEL = "llama-3.1-8b-instant"
-LLM_KEY = os.getenv("GROQ_API_KEY", "")
+app = FastAPI(title="Lead Gen SaaS")
 
 SCRAPE_API = "https://stealth-scraper-api.onrender.com/scrape"
 SCRAPE_KEY = os.getenv("SCRAPE_API_KEY", "sk-stealth-pro-99")
@@ -50,46 +45,40 @@ def fetch_listings(city: str, niche: str) -> list[dict]:
     for item in soup.select("div.company-item"):
         name_el = item.select_one(".company-item-title")
         phone_el = item.select_one(".company-item-phone")
+        website_el = item.select_one('a[href^="http"]:not([href*="merchantcircle"])')
         if name_el and phone_el:
             name = name_el.get_text(strip=True)
             phone = phone_el.get_text(strip=True)
+            website = website_el.get("href", "") if website_el else ""
             cleaned = "".join(c for c in phone if c.isdigit() or c in "()+-. ")
             if name and cleaned:
-                businesses.append({"business_name": name, "phone": cleaned})
+                businesses.append({"business_name": name, "phone": cleaned, "website": website})
 
     return businesses
 
 
-async def generate_email(business_name: str, niche: str) -> str:
-    if not LLM_KEY:
-        return "GROQ_API_KEY not configured"
+async def extract_email(website_url: str) -> str:
+    if not website_url:
+        return "No email found"
 
-    prompt = (
-        f"Write a short, 2-sentence cold email offering SEO services "
-        f"to a {niche} named {business_name}. Do not include the subject line."
-    )
-
-    time.sleep(1)
+    payload = {"key": SCRAPE_KEY, "url": website_url}
 
     async with httpx.AsyncClient() as client:
-        resp = await client.post(
-            LLM_URL,
-            headers={
-                "Authorization": f"Bearer {LLM_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": LLM_MODEL,
-                "messages": [{"role": "user", "content": prompt}],
-            },
-            timeout=30,
-        )
-        if resp.status_code == 200:
-            result = resp.json()
-            return result["choices"][0]["message"]["content"].strip()
-        print(f"Groq LLM call failed ({resp.status_code}): {resp.text}")
+        resp = await client.post(SCRAPE_API, json=payload, timeout=60)
+        if resp.status_code != 200:
+            return "No email found"
 
-    return "AI generation temporarily unavailable."
+        html = resp.text
+        emails = re.findall(r"[\w\.-]+@[\w\.-]+\.\w+", html)
+        junk_domains = {"example", "sentry", "donotreply"}
+        for email in emails:
+            local = email.split("@")[0].lower()
+            if local not in junk_domains and not any(
+                junk in email.lower() for junk in ["example", "sentry", "donotreply"]
+            ):
+                return email
+
+    return "No email found"
 
 
 @app.get("/")
@@ -108,6 +97,6 @@ async def generate(req: GenerateRequest):
         )
 
     for biz in businesses:
-        biz["ai_email"] = await generate_email(biz["business_name"], req.niche)
+        biz["email"] = await extract_email(biz.get("website", ""))
 
     return businesses
