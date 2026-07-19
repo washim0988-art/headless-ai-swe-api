@@ -86,7 +86,7 @@ def execute_polymarket_trade(market_id, outcome, amount):
     )
 
     order_args = OrderArgs(
-        price=1.0,
+        price=0.50,
         size=amount,
         side="BUY",
         token_id=token_id,
