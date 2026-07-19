@@ -1,9 +1,12 @@
 import os
 import re
+import warnings
 
 import brotli
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 STEALTH_API_URL = "https://stealth-scraper-api.onrender.com/scrape"
 STEALTH_API_KEY = "sk-stealth-pro-99"
@@ -29,12 +32,15 @@ def fetch_via_stealth(url):
 
 
 def fetch_top_headlines():
-    html = fetch_via_stealth("https://cryptopanic.com/news/")
+    html = fetch_via_stealth("https://cointelegraph.com/rss")
     soup = BeautifulSoup(html, "html.parser")
     headlines = []
-    for tag in soup.select("h2 a, h3 a, .title a, a[href*='/news/']"):
-        text = tag.get_text(strip=True)
-        if text and len(text) > 10:
+    for item in soup.select("item"):
+        title_tag = item.select_one("title")
+        if not title_tag:
+            continue
+        text = title_tag.get_text(strip=True)
+        if text:
             headlines.append(text)
         if len(headlines) >= 5:
             break
