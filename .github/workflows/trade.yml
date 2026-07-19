@@ -1,0 +1,31 @@
+name: Polymarket News Oracle
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 py-clob-client httpx brotli
+          
+      - name: Run Trading Bot
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DEPOSIT_WALLET_ADDRESS: ${{ secrets.DEPOSIT_WALLET_ADDRESS }}
+          SIGNER_ADDRESS: ${{ secrets.SIGNER_ADDRESS }}
+        run: python news_oracle.py
