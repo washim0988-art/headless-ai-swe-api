@@ -5,6 +5,9 @@ import warnings
 import brotli
 import requests
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from py_clob_client.client import ClobClient
+from py_clob_client.clob_types import OrderArgs
+from py_clob_client.constants import POLYGON
 
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
@@ -69,9 +72,28 @@ def ask_groq(prompt):
 
 
 def execute_polymarket_trade(market_id, outcome, amount):
-    print(f"[PLACEHOLDER] Polymarket trade: market={market_id}, outcome={outcome}, amount={amount}")
-    print(f"[PLACEHOLDER] Replace with py-clob-client call")
-    return True
+    private_key = os.environ.get("PRIVATE_KEY")
+    if not private_key:
+        raise RuntimeError("PRIVATE_KEY environment variable not set")
+    chain_id = int(os.environ.get("CHAIN_ID", "137"))
+
+    client = ClobClient(
+        host="https://clob.polymarket.com",
+        key=private_key,
+        chain_id=chain_id,
+    )
+
+    order_args = OrderArgs(
+        price=1.0,
+        size=amount,
+        side="BUY",
+        token_id=market_id,
+    )
+
+    signed_order = client.create_order(order_args)
+    receipt = client.post_order(signed_order)
+    print(f"Order placed: {receipt}")
+    return receipt
 
 
 def main():

@@ -5,3 +5,4 @@ beautifulsoup4
 brotli
 requests
 pydantic
+py-clob-client
