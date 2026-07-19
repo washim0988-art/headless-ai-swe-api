@@ -2,6 +2,7 @@ import argparse
 import csv
 import json
 import re
+import urllib.parse
 
 import brotli
 import requests
@@ -47,11 +48,13 @@ def find_website_on_detail_page(detail_url):
     return ""
 
 
-def scrape_merchantcircle(city, niche):
+def scrape_merchantcircle(city, niche, max_pages=5):
     results = []
+    encoded_niche = urllib.parse.quote(niche)
+    encoded_city = urllib.parse.quote(city)
     page = 1
-    while page <= 10:
-        url = f"https://www.merchantcircle.com/search?q={niche}&l={city}&page={page}"
+    while page <= max_pages:
+        url = f"https://www.merchantcircle.com/search?q={encoded_niche}&l={encoded_city}&page={page}"
         try:
             html = fetch_via_stealth(url)
         except Exception:
@@ -133,9 +136,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--city", required=True)
     parser.add_argument("--niche", required=True)
+    parser.add_argument("--pages", type=int, default=5)
     args = parser.parse_args()
 
-    businesses = scrape_merchantcircle(args.city, args.niche)
+    businesses = scrape_merchantcircle(args.city, args.niche, max_pages=args.pages)
     debug_saved = False
 
     output_file = f"{args.niche}_{args.city}_emails.csv"
