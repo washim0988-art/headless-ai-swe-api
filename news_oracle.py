@@ -35,15 +35,10 @@ def fetch_via_stealth(url):
 
 
 def fetch_top_headlines():
-    resp = requests.get(
-        "https://cointelegraph.com/rss",
-        headers={"User-Agent": "Mozilla/5.0"},
-        timeout=30,
-    )
-    soup = BeautifulSoup(resp.text, "html.parser")
-    all_titles = soup.select("title")
+    html = fetch_via_stealth("https://cointelegraph.com/rss")
+    soup = BeautifulSoup(html, "html.parser")
     headlines = []
-    for tag in all_titles[1:]:
+    for tag in soup.select("title"):
         text = tag.get_text(strip=True)
         if text:
             headlines.append(text)
@@ -74,7 +69,7 @@ def ask_groq(prompt):
 
 
 def execute_polymarket_trade(market_id, outcome, amount):
-    private_key = os.environ.get("PRIVATE_KEY")
+    private_key = os.getenv("PRIVATE_KEY")
     if not private_key:
         raise RuntimeError("PRIVATE_KEY environment variable not set")
     chain_id = int(os.environ.get("CHAIN_ID", "137"))
