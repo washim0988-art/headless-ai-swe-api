@@ -35,14 +35,16 @@ def fetch_via_stealth(url):
 
 
 def fetch_top_headlines():
-    html = fetch_via_stealth("https://cointelegraph.com/rss")
-    soup = BeautifulSoup(html, "html.parser")
+    resp = requests.get(
+        "https://cointelegraph.com/rss",
+        headers={"User-Agent": "Mozilla/5.0"},
+        timeout=30,
+    )
+    soup = BeautifulSoup(resp.text, "html.parser")
+    all_titles = soup.select("title")
     headlines = []
-    for item in soup.select("item"):
-        title_tag = item.select_one("title")
-        if not title_tag:
-            continue
-        text = title_tag.get_text(strip=True)
+    for tag in all_titles[1:]:
+        text = tag.get_text(strip=True)
         if text:
             headlines.append(text)
         if len(headlines) >= 5:
