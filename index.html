@@ -2,81 +2,384 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Shorts Vault — Finance Video Pack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Short Videos - Premium Content Pack</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#0d1117; color:#c9d1d9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
-  .wrap { max-width:860px; margin:0 auto; padding:32px 20px; }
-  h1 { color:#58a6ff; font-size:1.6rem; margin-bottom:8px; }
-  .sub { color:#8b949e; font-size:0.95rem; margin-bottom:24px; }
-  .card { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px; margin-bottom:16px; }
-  h2 { color:#3fb950; font-size:1.05rem; margin-bottom:12px; }
-  video { width:100%; max-width:340px; border-radius:8px; display:block; margin:0 auto 12px; background:#000; }
-  .row { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; }
-  .price { font-size:1.4rem; font-weight:700; color:#58a6ff; }
-  .addr { font-family:'Cascadia Code',monospace; background:#000; border:1px solid #21262d; border-radius:6px; padding:10px; word-break:break-all; font-size:0.85rem; color:#3fb950; margin:10px 0; }
-  .steps li { margin:8px 0 8px 18px; font-size:0.92rem; color:#c9d1d9; }
-  .badge { display:inline-block; background:#1f2937; color:#8b949e; border-radius:4px; padding:2px 8px; font-size:0.7rem; margin-left:6px; }
-  .note { color:#484f58; font-size:0.8rem; margin-top:16px; }
-  .btn { display:inline-block; background:#238636; color:#fff; padding:10px 22px; border-radius:6px; text-decoration:none; font-weight:600; margin-top:8px; }
-  .btn:hover { background:#2ea043; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 60px;
+}
+
+.header h1 {
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+
+.header p {
+  font-size: 20px;
+  color: #a0a0a0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.price-box {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border: 2px solid #667eea50;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.price-box .price {
+  font-size: 56px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 10px;
+}
+
+.price-box .subtitle {
+  font-size: 18px;
+  color: #a0a0a0;
+  margin-bottom: 30px;
+}
+
+.wallet-section {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.wallet-section h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #667eea;
+  margin-bottom: 12px;
+}
+
+.wallet-address {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  background: #0a0a0a;
+  padding: 16px;
+  border-radius: 8px;
+  word-break: break-all;
+  color: #e0e0e0;
+  border: 1px solid #333;
+}
+
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-bottom: 60px;
+}
+
+.video-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  border-color: #667eea;
+}
+
+.video-card video {
+  width: 100%;
+  aspect-ratio: 9/16;
+  background: #000;
+  object-fit: cover;
+}
+
+.video-card .info {
+  padding: 24px;
+}
+
+.video-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.video-card .meta {
+  font-size: 14px;
+  color: #808080;
+}
+
+.how-to-buy {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 60px;
+}
+
+.how-to-buy h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-bottom: 24px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step {
+  display: flex;
+  align-items: start;
+  gap: 20px;
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.step-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 6px;
+}
+
+.step-content p {
+  font-size: 15px;
+  color: #a0a0a0;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.feature {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.feature .icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.feature h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  font-size: 14px;
+  color: #a0a0a0;
+}
+
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid #333;
+  color: #808080;
+  font-size: 14px;
+}
+
+.copy-btn {
+  background: #667eea;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: #5568d3;
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 32px; }
+  .price-box .price { font-size: 40px; }
+  .videos-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>🎬 AI Shorts Vault <span class="badge">Finance Niche</span></h1>
-  <p class="sub">Ready-to-upload 9:16 short videos · English voiceover + subtitles · original footage · no copyright risk. Pay with crypto, receive files instantly.</p>
 
-  <div class="card">
-    <h2>Video #1 — "Three Money Habits That Quietly Build Wealth"</h2>
-    <video controls poster="frame.jpg">
-      <source src="video1.mp4" type="video/mp4">
-    </video>
-    <div class="row">
-      <div class="price">$10 USDC</div>
+<div class="container">
+
+  <div class="header">
+    <h1>🎬 AI Short Video Content Pack</h1>
+    <p>Professional 9:16 short-form videos optimized for TikTok, Instagram Reels, and YouTube Shorts. Real footage, engaging scripts, human-quality voiceovers.</p>
+  </div>
+
+  <div class="price-box">
+    <div class="price">$2.99 USDC</div>
+    <div class="subtitle">3 Premium Videos • Instant Delivery • Commercial Rights</div>
+    
+    <div class="wallet-section">
+      <h3>💳 Pay with Crypto (Base Network)</h3>
+      <div class="wallet-address">0x086219BDfCAE45232FD5dBf5760a962A5Ea4b022</div>
+      <button class="copy-btn" onclick="copyWallet()">Copy Address</button>
     </div>
-    <p class="note">1080x1920 · ~60s · h264+aac · English · subtitles burned in · TikTok/Shorts/Reels ready</p>
   </div>
 
-  <div class="card">
-    <h2>Video #2 — "Why Your Brain Loves Short Videos (And What To Do About It)"</h2>
-    <video controls poster="frame2.jpg">
-      <source src="video2.mp4" type="video/mp4">
-    </video>
-    <div class="row">
-      <div class="price">$10 USDC</div>
+  <div class="features">
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>Instant Delivery</h3>
+      <p>Download links within 24 hours of payment confirmation</p>
     </div>
-    <p class="note">1080x1920 · ~51s · h264+aac · English · subtitles burned in · TikTok/Shorts/Reels ready</p>
-  </div>
-
-  <div class="card">
-    <h2>Video #3 — "Five AI Tools That Save An Hour A Day"</h2>
-    <video controls poster="frame3.jpg">
-      <source src="video3.mp4" type="video/mp4">
-    </video>
-    <div class="row">
-      <div class="price">$10 USDC</div>
+    <div class="feature">
+      <div class="icon">🎥</div>
+      <h3>Real Footage</h3>
+      <p>Professional stock video clips, not AI-generated backgrounds</p>
     </div>
-    <p class="note">1080x1920 · ~60s · h264+aac · English · subtitles burned in · TikTok/Shorts/Reels ready</p>
+    <div class="feature">
+      <div class="icon">🗣️</div>
+      <h3>Human Voiceover</h3>
+      <p>Natural-sounding English narration with perfect timing</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📱</div>
+      <h3>9:16 Format</h3>
+      <p>Optimized for mobile platforms: TikTok, Reels, Shorts</p>
+    </div>
   </div>
 
-  <div class="card">
-    <h2>💰 How to Buy</h2>
-    <ol class="steps">
-      <li>Send <b>$10 USDC</b> (Base network) to the address below. Any chain works — tell me which after paying.</li>
-      <li>Wait ~2 min for confirmation (Base is instant).</li>
-      <li>Reply with your transaction hash + email/Telegram.</li>
-      <li>I send you the download link + full-resolution file.</li>
-    </ol>
-    <div class="addr">0x086219BDfCAE45232FD5dBf5760a962A5Ea4b022</div>
-    <p class="note">Base network USDC preferred. Accepting ETH, USDT, SOL, XLM, LTC on request.</p>
+  <h2 style="font-size: 32px; font-weight: 700; color: #e0e0e0; margin-bottom: 32px; text-align: center;">Preview Videos</h2>
+
+  <div class="videos-grid">
+    
+    <div class="video-card">
+      <video controls poster="frame1.jpg">
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+      <div class="info">
+        <h3>Three Money Habits That Quietly Build Wealth</h3>
+        <div class="meta">27.5 MB • 9:16 • English</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls poster="frame2.jpg">
+        <source src="video2.mp4" type="video/mp4">
+      </video>
+      <div class="info">
+        <h3>Why Your Brain Loves Short Videos</h3>
+        <div class="meta">28.1 MB • 9:16 • English</div>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls poster="frame3.jpg">
+        <source src="video3.mp4" type="video/mp4">
+      </video>
+      <div class="info">
+        <h3>Five AI Tools That Save An Hour A Day</h3>
+        <div class="meta">24.2 MB • 9:16 • English</div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="card">
-    <h2>📦 Bulk / Custom</h2>
-    <p style="font-size:0.92rem">Need 10-50 videos on a specific topic? Custom niche packages (crypto, fitness, business, AI) at $5/video bulk rate. Contact via the repo.</p>
+  <div class="how-to-buy">
+    <h2>How to Buy</h2>
+    <div class="steps">
+      
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Send Payment</h3>
+          <p>Send <strong>$2.99 in USDC</strong> to the wallet address above on <strong>Base network</strong>. Use Coinbase, MetaMask, or any Web3 wallet.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Email Transaction Hash</h3>
+          <p>Send your transaction hash and email address to <strong>washim0988art@gmail.com</strong> with subject "Video Pack Purchase".</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Receive Download Links</h3>
+          <p>You'll receive download links for all 3 videos within 24 hours. Files include commercial usage rights.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <div class="footer">
+    <p>Questions? Contact: washim0988art@gmail.com</p>
+    <p style="margin-top: 12px;">All videos include commercial usage rights. Instant delivery. Crypto payments only.</p>
+  </div>
+
 </div>
+
+<script>
+function copyWallet() {
+  const wallet = '0x086219BDfCAE45232FD5dBf5760a962A5Ea4b022';
+  navigator.clipboard.writeText(wallet).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy Address', 2000);
+  });
+}
+</script>
+
 </body>
 </html>
