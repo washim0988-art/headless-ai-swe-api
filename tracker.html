@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Application Tracker — Job Pipeline Monitor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e8e8e8;font-family:-apple-system,'Segoe UI',system-ui,sans-serif;padding:24px;max-width:1000px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#1a0d0d 0%,#0a0a0a 70%);border:1px solid#ff6b3522;border-radius:16px;padding:32px;margin-bottom:24px}
+.hero h1{font-size:32px;margin-bottom:8px}
+.hero h1 span{color:#ff6b35}
+.hero .tagline{color:#8a8a8a;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:32px}
+.stat-card{background:#161616;border:1px solid#2a2a2a;border-radius:10px;padding:18px;text-align:center}
+.stat-card .num{font-size:32px;font-weight:700;color:#00e5ff;margin-bottom:4px}
+.stat-card .label{font-size:12px;color:#8a8a8a;text-transform:uppercase;letter-spacing:1px}
+.stat-card.priority .num{color:#ff6b35}
+.app-card{background:#161616;border:1px solid#2a2a2a;border-radius:12px;padding:20px;margin-bottom:16px}
+.app-card:hover{border-color:#ff6b3533}
+.app-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px}
+.app-header h3{font-size:17px;margin-bottom:6px}
+.company{font-size:13px;color:#8a8a8a}
+.status-badge{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+.app-meta{display:flex;gap:20px;font-size:12px;color:#666;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid#2a2a2a}
+.app-footer{display:flex;justify-content:space-between;align-items:center}
+.proposal-link{color:#00e5ff;text-decoration:none;font-size:13px}
+.proposal-link:hover{text-decoration:underline}
+.btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;transition:opacity .15s}
+.btn-primary{background:#ff6b35;color:#fff}
+.btn-primary:hover{opacity:0.85}
+.btn-secondary{background:#2a2a2a;color:#00e5ff;border:1px solid#00e5ff33}
+.btn-secondary:hover{background:#00e5ff11}
+.btn-text{color:#666;font-size:13px}
+footer{margin-top:32px;padding-top:20px;border-top:1px solid#2a2a2a;color:#555;font-size:12px;text-align:center}
+.nav{display:flex;gap:16px;justify-content:center;margin-top:12px}
+.nav a{color:#00e5ff;text-decoration:none}
+.nav a:hover{text-decoration:underline}
+</style>
+</head><body>
+
+<div class="hero">
+  <h1>📋 Application <span>Tracker</span></h1>
+  <p class="tagline">Job pipeline monitor • updated 2026-08-01 16:51 UTC • tracks submissions & responses</p>
+</div>
+
+<div class="stats">
+  <div class="stat-card priority">
+    <div class="num">1</div>
+    <div class="label">Ready to Submit</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">0</div>
+    <div class="label">Submitted</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">3</div>
+    <div class="label">Drafted</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">4</div>
+    <div class="label">Total Pipeline</div>
+  </div>
+</div>
+
+<h2 style="font-size:20px;margin-bottom:16px;color:#d0d0d0">📌 Active Applications</h2>
+
+<div class="app-card">
+  <div class="app-header">
+    <div>
+      <h3>AI Trainer / Data Annotator</h3>
+      <p class="company">Mindrift • $17-37/hr</p>
+    </div>
+    <span class="status-badge" style="background:#ff6b3522;color:#ff6b35">⚠️ Ready to Submit</span>
+  </div>
+  <div class="app-meta">
+    <span>Priority: #1</span>
+    <span>Submitted: Not submitted</span>
+  </div>
+  <div class="app-footer">
+    <a href="proposals/ai-trainer-freelance-data-annotator.md" class="proposal-link">View proposal</a>
+    <a href="https://apply.workable.com/toloka-ai/j/C994C39E65/" target="_blank" class="btn btn-primary">Submit Now →</a>
+  </div>
+</div>
+<div class="app-card">
+  <div class="app-header">
+    <div>
+      <h3>Social &amp; Influencer Marketing</h3>
+      <p class="company">Society 18 • Not listed</p>
+    </div>
+    <span class="status-badge" style="background:#8a8a8a22;color:#8a8a8a">📝 Drafted</span>
+  </div>
+  <div class="app-meta">
+    <span>Priority: #2</span>
+    <span>Submitted: Not submitted</span>
+  </div>
+  <div class="app-footer">
+    <a href="proposals/associate-events-social-influencer-marketing.md" class="proposal-link">View proposal</a>
+    <a href="https://remoteOK.com/remote-jobs/remote-associate-events-social-amp-influencer-marketing-society-18-1135695" target="_blank" class="btn btn-secondary">View & Apply →</a>
+  </div>
+</div>
+<div class="app-card">
+  <div class="app-header">
+    <div>
+      <h3>AI Product Engineer - ClickStack</h3>
+      <p class="company">ClickHouse • Not listed</p>
+    </div>
+    <span class="status-badge" style="background:#8a8a8a22;color:#8a8a8a">📝 Drafted</span>
+  </div>
+  <div class="app-meta">
+    <span>Priority: #3</span>
+    <span>Submitted: Not submitted</span>
+  </div>
+  <div class="app-footer">
+    <a href="proposals/clickhouse-ai-product-engineer-clickstack.md" class="proposal-link">View proposal</a>
+    <a href="https://weworkremotely.com/remote-jobs/clickhouse-ai-product-engineer-clickstack" target="_blank" class="btn btn-secondary">View & Apply →</a>
+  </div>
+</div>
+<div class="app-card">
+  <div class="app-header">
+    <div>
+      <h3>AR &amp; Billing Operations</h3>
+      <p class="company">ClickHouse • Not listed</p>
+    </div>
+    <span class="status-badge" style="background:#8a8a8a22;color:#8a8a8a">📝 Drafted</span>
+  </div>
+  <div class="app-meta">
+    <span>Priority: #4</span>
+    <span>Submitted: Not submitted</span>
+  </div>
+  <div class="app-footer">
+    <a href="proposals/clickhouse-accounts-receivable-billing-operations.md" class="proposal-link">View proposal</a>
+    <a href="https://weworkremotely.com/remote-jobs/clickhouse-accounts-receivable-and-billing-operations-manager" target="_blank" class="btn btn-secondary">View & Apply →</a>
+  </div>
+</div>
+
+<footer>
+  Application tracker • data syncs from proposals & manual status updates •
+  <div class="nav">
+    <a href="dashboard.html">mission control</a> •
+    <a href="proposals.html">view proposals</a> •
+    <a href="gig_radar.html">gig radar</a>
+  </div>
+</footer>
+
+</body></html>
