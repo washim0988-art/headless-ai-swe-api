@@ -7,6 +7,10 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#0a0a0a; color:#e8e8e8; font-family:-apple-system,'Segoe UI',system-ui,sans-serif; padding:24px; }
+.hero { background:linear-gradient(135deg,#0d1b2a 0%,#0a0a0a 60%); border:1px solid #00e5ff22; border-radius:16px; padding:28px; margin-bottom:24px; }
+.hero h1 { font-size:30px; letter-spacing:-0.5px; }
+.hero h1 span { color:#00e5ff; }
+.hero .tagline { color:#8a8a8a; font-size:14px; margin-top:6px; }
 header { display:flex; justify-content:space-between; align-items:baseline; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
 h1 { font-size:26px; letter-spacing:-0.5px; }
 h1 span { color:#00e5ff; }
@@ -28,8 +32,10 @@ footer { margin-top:24px; color:#555; font-size:12px; text-align:center; }
 </head>
 <body>
 <header>
-  <h1>🎯 Gig <span>Radar</span></h1>
-  <span class="sub">18 gigs • refreshed 2026-08-01 16:11 UTC</span>
+  <div class="hero">
+    <h1>🎯 Gig <span>Radar</span></h1>
+    <p class="tagline">18 freelance gigs matching our skills • refreshed 2026-08-01 16:11 UTC</p>
+  </div>
 </header>
 <div class="grid">
     <div class="card">
