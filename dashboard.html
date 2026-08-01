@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission Control — Revenue Agent Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e8e8e8;font-family:-apple-system,'Segoe UI',system-ui,sans-serif;padding:20px;max-width:1200px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#0d1b2a 0%,#0a0a0a 70%);border:1px solid#00e5ff22;border-radius:16px;padding:32px;margin-bottom:24px}
+.hero h1{font-size:32px;margin-bottom:8px}
+.hero h1 span{color:#00e5ff}
+.hero .tagline{color:#8a8a8a;font-size:14px}
+.earnings{background:#161616;border:1px solid#2a2a2a;border-radius:12px;padding:24px;margin-bottom:24px}
+.earnings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.earnings-item{text-align:center}
+.earnings-item .label{color:#8a8a8a;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.earnings-item .value{font-size:28px;font-weight:700;color:#00e5ff}
+.earnings-item .sub{color:#666;font-size:13px;margin-top:4px}
+.progress{background:#1a1a1a;border-radius:8px;height:8px;margin-top:12px;overflow:hidden}
+.progress-bar{background:linear-gradient(90deg,#00e5ff,#0088cc);height:100%;width:0.0000%;transition:width .3s}
+h2{font-size:20px;margin-bottom:16px;color:#d0d0d0}
+.section{margin-bottom:32px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.agent-card,.gig-card{background:#161616;border:1px solid#2a2a2a;border-radius:10px;padding:16px}
+.agent-card:hover,.gig-card:hover{border-color:#00e5ff33}
+.agent-head{display:flex;gap:12px;align-items:flex-start}
+.emoji{font-size:28px;line-height:1}
+.agent-head h4{font-size:15px;margin-bottom:4px}
+.agent-head p{font-size:12px;color:#8a8a8a;line-height:1.4}
+.agent-foot{margin-top:12px;padding-top:12px;border-top:1px solid#2a2a2a;font-size:12px;color:#666}
+.gig-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.score{font-size:18px;font-weight:700;min-width:36px;text-align:center}
+.gig-head h5{font-size:14px;line-height:1.3}
+.gig-foot{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.gig-foot span{color:#8a8a8a}
+.gig-foot a{color:#00e5ff;text-decoration:none}
+.gig-foot a:hover{text-decoration:underline}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid#2a2a2a;color:#555;font-size:12px;text-align:center}
+.refresh{color:#00e5ff;cursor:pointer;text-decoration:none}
+.refresh:hover{text-decoration:underline}
+</style>
+<script>
+setTimeout(() => location.reload(), 60000); // auto-refresh every 60s
+</script>
+</head><body>
+
+<div class="hero">
+  <h1>🎯 Mission <span>Control</span></h1>
+  <p class="tagline">Autonomous revenue agent dashboard • updated 2026-08-01 16:47 UTC • auto-refreshes every 60s</p>
+</div>
+
+<div class="earnings">
+  <div class="earnings-grid">
+    <div class="earnings-item">
+      <div class="label">Verified Earnings</div>
+      <div class="value">$0.00</div>
+      <div class="sub">USDC on-chain</div>
+    </div>
+    <div class="earnings-item">
+      <div class="label">Target</div>
+      <div class="value">$1,000,000</div>
+      <div class="sub">$1M goal</div>
+    </div>
+    <div class="earnings-item">
+      <div class="label">Progress</div>
+      <div class="value">0.0000%</div>
+      <div class="sub">5 agents active</div>
+    </div>
+  </div>
+  <div class="progress"><div class="progress-bar"></div></div>
+</div>
+
+<div class="section">
+  <h2>🤖 Active Agents (6)</h2>
+  <div class="grid">
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">🎯</span>
+    <div>
+      <h4>Bounty Monitor</h4>
+      <p>Scans Agent Bounties for capital-free coding work</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#00e5ff">⏱ 0:41:18</span>
+  </div>
+</div>
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">💧</span>
+    <div>
+      <h4>Faucet Claimer</h4>
+      <p>Attempts crypto faucet claims (low-ROI)</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#00e5ff">⏱ 0:00:01</span>
+  </div>
+</div>
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">⚡</span>
+    <div>
+      <h4>PoW Claimer</h4>
+      <p>Fires 16-bit PoW bounty when funded</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#555">⏱ 0:00:00</span>
+  </div>
+</div>
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">🎬</span>
+    <div>
+      <h4>Video Factory</h4>
+      <p>Generates 9:16 shorts every 3h</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#00e5ff">⏱ 0:00:01</span>
+  </div>
+</div>
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">📊</span>
+    <div>
+      <h4>Dashboard Server</h4>
+      <p>Serves status.json on port 8080</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#00e5ff">⏱ 0:41:19</span>
+  </div>
+</div>
+<div class="agent-card">
+  <div class="agent-head">
+    <span class="emoji">💰</span>
+    <div>
+      <h4>Revenue Distributor</h4>
+      <p>Polls wallet for USDC settlements</p>
+    </div>
+  </div>
+  <div class="agent-foot">
+    <span style="color:#00e5ff">⏱ 0:41:21</span>
+  </div>
+</div></div>
+</div>
+
+<div class="section">
+  <h2>📋 Gig Pipeline (Top 6)</h2>
+  <div class="grid">
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#00e5ff">87</span>
+    <h5>AI Trainer Freelance Data Annotator</h5>
+  </div>
+  <div class="gig-foot">
+    <span>Mindrift - Data annotation</span>
+    <a href="https://remoteOK.com/remote-jobs/remote-ai-trainer-freelance-data-annotator-mindrift-data-annotation-1135680" target="_blank">view →</a>
+  </div>
+</div>
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#00e5ff">72</span>
+    <h5>Associate Events Social &amp;amp; Influencer Marketing</h5>
+  </div>
+  <div class="gig-foot">
+    <span>Society 18</span>
+    <a href="https://remoteOK.com/remote-jobs/remote-associate-events-social-amp-influencer-marketing-society-18-1135695" target="_blank">view →</a>
+  </div>
+</div>
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#00e5ff">72</span>
+    <h5>ClickHouse: Accounts Receivable and Billing Operations Manag</h5>
+  </div>
+  <div class="gig-foot">
+    <span>weworkremotely</span>
+    <a href="https://weworkremotely.com/remote-jobs/clickhouse-accounts-receivable-and-billing-operations-manager" target="_blank">view →</a>
+  </div>
+</div>
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#ffaa00">63</span>
+    <h5>ClickHouse: AI Product Engineer - ClickStack</h5>
+  </div>
+  <div class="gig-foot">
+    <span>weworkremotely</span>
+    <a href="https://weworkremotely.com/remote-jobs/clickhouse-ai-product-engineer-clickstack" target="_blank">view →</a>
+  </div>
+</div>
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#ffaa00">60</span>
+    <h5>Traveler Care Specialist Luxury Travel</h5>
+  </div>
+  <div class="gig-foot">
+    <span>Zicasso</span>
+    <a href="https://remoteOK.com/remote-jobs/remote-traveler-care-specialist-luxury-travel-zicasso-1135640" target="_blank">view →</a>
+  </div>
+</div>
+<div class="gig-card">
+  <div class="gig-head">
+    <span class="score" style="color:#ffaa00">60</span>
+    <h5>Coinbase: Machine Learning Engineer, CX Intelligence</h5>
+  </div>
+  <div class="gig-foot">
+    <span>weworkremotely</span>
+    <a href="https://weworkremotely.com/remote-jobs/coinbase-machine-learning-engineer-cx-intelligence" target="_blank">view →</a>
+  </div>
+</div></div>
+</div>
+
+<footer>
+  Real-time dashboard • data from status.json • agents monitored via process PIDs •
+  <a href="proposals.html" class="refresh">view proposals</a> •
+  <a href="gig_radar.html" class="refresh">full gig radar</a>
+</footer>
+
+</body></html>
